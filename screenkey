@@ -40,6 +40,8 @@ def main():
                     help=_("make window persistent"))
     ap.add_argument("-s", "--font-size", choices=FONT_SIZES,
                     help=_("set font size"))
+    ap.add_argument("-a", "--text-alignment", choices=TEXT_ALIGNMENTS,
+                    help=_("set text alignment"))
     ap.add_argument("-g", "--geometry", type=geometry,
                     help=_("set fixed area/window geometry"))
     ap.add_argument("--key-mode", choices=KEY_MODES,
@@ -79,7 +81,7 @@ def main():
     for arg in ['timeout', 'position', 'persist', 'font_desc', 'font_color', 'bg_color',
                 'font_size', 'geometry', 'key_mode', 'bak_mode', 'mods_mode', 'mods_only',
                 'multiline', 'vis_shift', 'vis_space', 'screen', 'no_systray',
-                'opacity', 'ignore', 'compr_cnt']:
+                'opacity', 'ignore', 'compr_cnt', 'text_alignment']:
         if getattr(args, arg) is not None:
             options[arg] = getattr(args, arg)
 

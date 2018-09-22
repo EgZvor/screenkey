@@ -42,6 +42,7 @@ class Screenkey(gtk.Window):
                             'ignore': [],
                             'position': 'bottom',
                             'persist': False,
+                            'text_alignment': 'center',
                             'font_desc': 'Sans Bold',
                             'font_size': 'medium',
                             'font_color': 'white',
@@ -78,7 +79,7 @@ class Screenkey(gtk.Window):
         self.label = gtk.Label()
         self.label.set_attributes(pango.AttrList())
         self.label.set_ellipsize(pango.ELLIPSIZE_START)
-        self.label.set_justify(gtk.JUSTIFY_CENTER)
+        self.update_alignment()
         self.label.show()
         self.add(self.label)
 
@@ -178,6 +179,15 @@ class Screenkey(gtk.Window):
         text = self.label.get_text()
         self.override_font_attributes(attr, text)
         self.label.set_attributes(attr)
+
+
+    def update_alignment(self):
+        alignments = {
+            'left': 0.0,
+            'center': 0.5,
+            'right': 1.0,
+        }
+        self.label.set_alignment(alignments[self.options.text_alignment], 0.5)
 
 
     def update_colors(self):
@@ -361,6 +371,12 @@ class Screenkey(gtk.Window):
         def on_sb_time_changed(widget, data=None):
             self.options.timeout = widget.get_value()
             self.logger.debug("Timeout value changed: %f." % self.options.timeout)
+
+        def on_cbox_alignments_changed(widget, data=None):
+            index = widget.get_active()
+            self.options.text_alignment = TEXT_ALIGNMENTS.keys()[index]
+            self.update_alignment()
+            self.logger.debug("Text alignment changed to: %s." % self.options.text_alignment)
 
         def on_cbox_sizes_changed(widget, data=None):
             index = widget.get_active()
@@ -595,8 +611,21 @@ class Screenkey(gtk.Window):
         hbox2_aspect.pack_start(lbl_sizes, expand=False, fill=False, padding=6)
         hbox2_aspect.pack_start(cbox_sizes, expand=False, fill=False, padding=4)
 
+        hbox6_alignment = gtk.HBox()
+        lbl_alignments = gtk.Label(_("Alignment"))
+        cbox_alignments = gtk.combo_box_new_text()
+        cbox_alignments.set_name('alignments')
+        for key, value in enumerate(TEXT_ALIGNMENTS):
+            cbox_alignments.insert_text(key, value)
+        cbox_alignments.set_active(TEXT_ALIGNMENTS.keys().index(self.options.text_alignment))
+        cbox_alignments.connect("changed", on_cbox_alignments_changed)
+
+        hbox6_alignment.pack_start(lbl_alignments, expand=False, fill=False, padding=6)
+        hbox6_alignment.pack_start(cbox_alignments, expand=False, fill=False, padding=4)
+
         vbox_aspect.pack_start(hbox0_font)
         vbox_aspect.pack_start(hbox2_aspect)
+        vbox_aspect.pack_start(hbox6_alignment)
 
         frm_aspect.add(vbox_aspect)
 

@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import gettext
 gettext.install('screenkey', unicode=True)
 
@@ -12,39 +13,35 @@ ERROR_URL = 'https://www.thregr.org/~wavexx/software/screenkey/#troubleshooting'
 
 
 # CLI/Interface options
-POSITIONS = {
-    'top': _('Top'),
-    'center': _('Center'),
-    'bottom': _('Bottom'),
-    'fixed': _('Fixed'),
-}
+POSITIONS = OrderedDict(zip(
+    ('top', 'center', 'bottom', 'fixed'),
+    (_('Top'), _('Center'), _('Bottom'), _('Fixed'))
+))
 
-FONT_SIZES = {
-    'large': _('Large'),
-    'medium': _('Medium'),
-    'small': _('Small'),
-}
+TEXT_ALIGNMENTS = OrderedDict(zip(
+    ('left', 'center', 'right'),
+    (_('Left'), _('Center'), _('Right'))
+))
 
-KEY_MODES = {
-    'composed': _('Composed'),
-    'translated': _('Translated'),
-    'keysyms': _('Keysyms'),
-    'raw': _('Raw'),
-}
+FONT_SIZES = OrderedDict(zip(
+    ('small', 'medium', 'large',),
+    (_('Small'), _('Medium'), _('Large'),)
+))
 
-BAK_MODES = {
-    'normal': _('Normal'),
-    'baked': _('Baked'),
-    'full': _('Full'),
-}
+KEY_MODES = OrderedDict(zip(
+    ('composed', 'translated', 'keysyms', 'raw',),
+    (_('Composed'), _('Translated'), _('Keysyms'), _('Raw'),)
+))
 
-MODS_MODES = {
-    'normal': _('Normal'),
-    'emacs': _('Emacs'),
-    'mac': _('Mac'),
-    'win': _('Windows'),
-    'tux': _('Linux'),
-}
+BAK_MODES = OrderedDict(zip(
+    ('normal', 'baked', 'full',),
+    (_('Normal'), _('Baked'), _('Full'),)
+))
+
+MODS_MODES = OrderedDict(zip(
+    ('normal', 'emacs', 'mac', 'win', 'tux',),
+    (_('Normal'), _('Emacs'), _('Mac'), _('Windows'), _('Linux'),)
+))
 
 class Options(dict):
     def __getattr__(self, k):
